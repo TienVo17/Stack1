@@ -2,8 +2,10 @@ package com.example.book_be.services.admin;
 
 import com.example.book_be.bo.SachBo;
 import com.example.book_be.dao.HinhAnhRepository;
+import com.example.book_be.dao.NhaCungCapRepository;
 import com.example.book_be.dao.SachRepository;
 import com.example.book_be.entity.HinhAnh;
+import com.example.book_be.entity.NhaCungCap;
 import com.example.book_be.entity.Sach;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.criteria.Predicate;
@@ -24,6 +26,9 @@ public class SachServiceImpl implements SachService {
 
     @Autowired
     private HinhAnhRepository hinhAnhRepository;
+    
+    @Autowired
+    private NhaCungCapRepository nhaCungCapRepository;
 
     public SachServiceImpl(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
@@ -55,6 +60,8 @@ public class SachServiceImpl implements SachService {
 
     @Override
     public Sach save(Sach sach) {
+
+
         Sach bo = sachRepository.save(sach);
         if (!bo.getListImageStr().isEmpty()) {
             for (String urlString : bo.getListImageStr()) {

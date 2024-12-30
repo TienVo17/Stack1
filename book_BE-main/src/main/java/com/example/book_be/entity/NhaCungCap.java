@@ -1,5 +1,7 @@
 package com.example.book_be.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
@@ -15,7 +17,7 @@ public class NhaCungCap {
 
     @Column(name = "ten_nha_cung_cap", length = 256)
     private String tenNhaCungCap;
-
     @OneToMany(mappedBy = "nhaCungCap", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonManagedReference
     private List<Sach> listSach;
 }

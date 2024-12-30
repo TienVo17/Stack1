@@ -181,32 +181,38 @@ public class DonHangController {
                 "</html>";
     }
     @PostMapping("/them-don-hang-moi")
-    public DonHang themDonHangMoi(
+    public ResponseEntity<Map<String, Object>> themDonHangMoi(
             @RequestParam String hoTen,
             @RequestParam String soDienThoai,
             @RequestParam String diaChiNhanHang) {
         DonHang donHang = new DonHang();
-
-        // Gán các giá trị cần thiết
         donHang.setHoTen(hoTen);
         donHang.setSoDienThoai(soDienThoai);
         donHang.setDiaChiNhanHang(diaChiNhanHang);
         donHang.setNgayTao(new Date());
-        donHang.setTongTien(0);
-        donHang.setTrangThaiThanhToan(0);
-        donHang.setTrangThaiGiaoHang(0);
+        donHang.setTongTien(1000);
+        donHang.setTrangThaiThanhToan(2);
+        donHang.setTrangThaiGiaoHang(1);
 
-        // Gán mã đơn hàng ngẫu nhiên
         Random random = new Random();
         int randomMaDonHang = 1000 + random.nextInt(9000);
         donHang.setMaDonHang(randomMaDonHang);
 
-        // Gán giá trị mặc định cho NguoiDung
         NguoiDung defaultNguoiDung = new NguoiDung();
-        defaultNguoiDung.setMaNguoiDung(1); // ID mặc định trong cơ sở dữ liệu
+        defaultNguoiDung.setMaNguoiDung(1);
         donHang.setNguoiDung(defaultNguoiDung);
 
-        return donHangRepository.save(donHang);
+        DonHang savedDonHang = donHangRepository.save(donHang);
+
+        // Tạo phản hồi JSON
+        Map<String, Object> response = new HashMap<>();
+        response.put("maDonHang", savedDonHang.getMaDonHang());
+        response.put("tongTien", savedDonHang.getTongTien());
+        response.put("hoTen", savedDonHang.getHoTen());
+        response.put("soDienThoai", savedDonHang.getSoDienThoai());
+        response.put("diaChiNhanHang", savedDonHang.getDiaChiNhanHang());
+
+        return ResponseEntity.ok(response);
     }
 
 
