@@ -62,12 +62,6 @@ public class Sach {
     @OneToMany(mappedBy = "sach", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<SachYeuThich> listSachYeuThich;
 
-    @ManyToOne(cascade = {
-            CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST
-    })
-    @JoinColumn(name = "ma_nha_cung_cap", nullable = true)
-    @JsonBackReference
-    private NhaCungCap nhaCungCap;
 
     @JsonIgnore
     @OneToMany(mappedBy = "sach", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

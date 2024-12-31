@@ -14,8 +14,9 @@ const SachForm: React.FC = () => {
         soLuong: 0,
         tenTacGia: "",
         isbn: "",
-        trungBinhXepHang: 0,
-        listImageStr:[]
+        trungBinhXepHang: 5,
+        listImageStr:[],
+        isActive: 1,
     });
     const navigate = useNavigate();
 
@@ -70,8 +71,9 @@ const SachForm: React.FC = () => {
                     soLuong: 0,
                     tenTacGia: "",
                     isbn: "",
-                    trungBinhXepHang: 0,
-                    listImageStr: []
+                    trungBinhXepHang: 5,
+                    listImageStr: [],
+                    isActive: 1,
                 });
             })
             .catch((error) => {

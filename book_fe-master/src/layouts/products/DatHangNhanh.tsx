@@ -37,67 +37,68 @@ const DatHangNhanh: React.FC = () => {
         }
 
         try {
-          const gioHang = localStorage.getItem("gioHang");
-          const cartItems: CartItem[] = JSON.parse(gioHang || "[]");
-      
-          if (cartItems.length === 0) {
-              toast.error("Giỏ hàng trống!");
-              setIsLoading(false);
-              return;
-          }
-      
-          // Calculate total first
-          const tongTien = cartItems.reduce(
-              (total, item) => total + item.sachDto.giaBan * item.soLuong,
-              0
-          );
-      
-          const queryParams = new URLSearchParams({
-              hoTen: formData.hoTen,
-              soDienThoai: formData.soDienThoai,
-              diaChiNhanHang: formData.diaChiNhanHang,
-          });
-      
-          const response = await fetch(
-              `http://localhost:8080/api/don-hang/them-don-hang-moi?${queryParams}`,
-              {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(cartItems),
-              }
-          );
-      
-          if (!response.ok || response.status === 204) {
-              toast.error("Đặt hàng thất bại. Vui lòng thử lại.");
-              return;
-          }
-      
-          const text = await response.text();
-          const donHang = text ? JSON.parse(text) : null;
-      
-          if (donHang && donHang.maDonHang) {
-              localStorage.setItem(
-                  "orderData",
-                  JSON.stringify({
-                      formData,
-                      cartItems,
-                      tongTien,
-                      maDonHang: donHang.maDonHang,
-                  })
-              );
-              toast.success("Đặt hàng thành công!");
-              navigate("/thanh-toan");
-          } else {
-              throw new Error("Invalid order data received");
-          }
-      } catch (error) {
-          console.error("Lỗi đặt hàng:", error);
-          toast.error("Có lỗi xảy ra khi đặt hàng");
-      } finally {
-          setIsLoading(false);
-      }
+            const gioHang = localStorage.getItem("gioHang");
+            const cartItems: CartItem[] = JSON.parse(gioHang || "[]");
+
+            if (cartItems.length === 0) {
+                toast.error("Giỏ hàng trống!");
+                setIsLoading(false);
+                return;
+            }
+
+            // Calculate total first
+            const tongTien = cartItems.reduce(
+                (total, item) => total + item.sachDto.giaBan * item.soLuong,
+                0
+            );
+
+            const queryParams = new URLSearchParams({
+                hoTen: formData.hoTen,
+                soDienThoai: formData.soDienThoai,
+                diaChiNhanHang: formData.diaChiNhanHang,
+            });
+
+            const response = await fetch(
+                `http://localhost:8080/api/don-hang/them-don-hang-moi?${queryParams}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(cartItems),
+                }
+            );
+
+            if (!response.ok || response.status === 204) {
+                toast.error("Đặt hàng thất bại. Vui lòng thử lại.");
+                setIsLoading(false);
+                return;
+            }
+
+            const text = await response.text();
+            const donHang = text ? JSON.parse(text) : null;
+
+            if (donHang && donHang.maDonHang) {
+                localStorage.setItem(
+                    "orderData",
+                    JSON.stringify({
+                        formData,
+                        cartItems,
+                        tongTien,
+                        maDonHang: donHang.maDonHang,
+                    })
+                );
+                toast.success("Đặt hàng thành công!");
+                navigate("/thanh-toan");
+            } else {
+                throw new Error("Invalid order data received");
+            }
+        } catch (error) {
+            console.error("Lỗi đặt hàng:", error);
+            toast.error("Có lỗi xảy ra khi đặt hàng");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (

@@ -118,7 +118,7 @@ public class DonHangController {
                         String.valueOf(donHang.getTongTien()),
                         chiTietDonHangs
                 );
-                emailService.sendEmail("tienvovan917@gmail.com", donHang.getNguoiDung().getEmail(),
+                emailService.sendEmail("anhthai2000atm@gmail.com", donHang.getNguoiDung().getEmail(),
                         "Thông báo Đơn hàng của bạn", noiDung);
             } catch (Exception e) {
 

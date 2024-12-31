@@ -9,9 +9,9 @@ function About() {
         <div className="row">
           <div className="col-lg-8">
             <p><strong>Tên website: </strong>BookStore</p>
-            <p><strong>Địa chỉ: </strong> A34/24D3 Quốc lộ 50 xã bình hưng huyện bình chánh</p>
-            <p><strong>Số điện thoại: </strong>0348972987</p>
-            <p><strong>Email: </strong>tienvovan917@gmail.com</p>
+            <p><strong>Địa chỉ: </strong> 00000</p>
+            <p><strong>Số điện thoại: </strong>000000</p>
+            <p><strong>Email: </strong>000000</p>
           </div>
           <div className="col-lg-4">
             <div
@@ -36,7 +36,7 @@ function About() {
           <iframe
             width="600"
             height="450"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=106.67393%2C10.73398%2C106.68193%2C10.74198&layer=mapnik&marker=10.73798%2C106.67793"
+            src=""
             style={{ border: "1px solid black" }}
             title="BookStore Location"
           ></iframe>

@@ -1,40 +1,67 @@
 import React, { useState } from "react";
-import { NavLink,useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from "react-router-dom";
+import { GoogleLoginButton } from "react-social-login-buttons";
+import { LoginSocialGoogle } from "reactjs-social-login";
 const DangNhap = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    imageUrl: "",
+  });
+  const handleGoogleLoginSuccess = (response: any) => {
+    console.log("Google Login Success:", response);
+    setUserInfo({
+      name: response.data.name,
+      email: response.data.email,
+      imageUrl: response.data.picture,
+    });
+    setError("");
+    navigate("/"); // Chuyển hướng về trang chủ
+  };
+  const handleGoogleLoginError = (error: any) => {
+    console.error("Google Login Error:", error);
+    setError("Đăng nhập Google thất bại. Vui lòng thử lại.");
+  };
   const handleDangNhap = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+
     const loginRequest = {
       username: username,
       password: password,
     };
 
+
+   
+
+
     try {
-      const response = await fetch("http://localhost:8080/tai-khoan/dang-nhap", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(loginRequest),
-      });
+      const response = await fetch(
+        "http://localhost:8080/tai-khoan/dang-nhap",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginRequest),
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         // Lưu JWT vào localStorage
-        localStorage.setItem('jwt', data.jwt);
+        localStorage.setItem("jwt", data.jwt);
         setError("Đăng nhập thành công!");
-        if(localStorage.getItem("nextPay") ==="true"){
+        if (localStorage.getItem("nextPay") === "true") {
           localStorage.removeItem("nextPay");
-          navigate('/thanh-toan'); 
-        }else{
-          navigate('/'); // Chuyển hướng về trang chủ
+          navigate("/thanh-toan");
+        } else {
+          navigate("/"); // Chuyển hướng về trang chủ
         }
-       
+
         window.location.reload(); // Reload để cập nhật state
       } else {
         throw new Error("Đăng nhập thất bại!");
@@ -98,7 +125,15 @@ const DangNhap = () => {
                     />
                   </div>
                 </div>
-
+                <div className="d-grid mb-4">
+                  <LoginSocialGoogle
+                    client_id="298075271230-0impui1kcgh74pjkfe2ar42ohbu9luip.apps.googleusercontent.com" // Thay bằng Google Client ID
+                    onResolve={handleGoogleLoginSuccess}
+                    onReject={handleGoogleLoginError}
+                  >
+                    <GoogleLoginButton />
+                  </LoginSocialGoogle>
+                </div>
                 <div className="mb-3 form-check">
                   <input
                     type="checkbox"
@@ -111,10 +146,7 @@ const DangNhap = () => {
                 </div>
 
                 <div className="d-grid">
-                  <button
-                    type="submit"
-                    className="btn btn-primary btn-lg"
-                  >
+                  <button type="submit" className="btn btn-primary btn-lg">
                     Đăng nhập
                   </button>
                 </div>
@@ -127,9 +159,11 @@ const DangNhap = () => {
                 )}
 
                 <div className="text-center mt-3">
-                  <button 
-                    className="btn btn-link text-decoration-none p-0" 
-                    onClick={() => {/* xử lý quên mật khẩu */}}
+                  <button
+                    className="btn btn-link text-decoration-none p-0"
+                    onClick={() => {
+                      /* xử lý quên mật khẩu */
+                    }}
                   >
                     Quên mật khẩu?
                   </button>
